@@ -1,9 +1,10 @@
 package com.example.cart.models;
 
-import org.springframework.data.annotation.Id;
+
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 @Entity
 public class CartItem {
@@ -18,6 +19,10 @@ public class CartItem {
         this.id = id;
         this.productId = productId;
         this.quantity = quantity;
+    }
+
+    public CartItem() {
+
     }
 
     public Long getId() {
