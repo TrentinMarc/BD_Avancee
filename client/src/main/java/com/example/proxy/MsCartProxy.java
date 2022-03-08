@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Optional;
 
-@FeignClient(name = "ms-cart", url = "localhost:8090")
+@FeignClient(name = "ms-cart", url = "localhost:8092")
 public interface MsCartProxy {
     @PostMapping(value = "/cart")
     public ResponseEntity<CartBean> createNewCart(@RequestBody CartBean cartData);

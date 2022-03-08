@@ -16,6 +16,7 @@ public class ClientController {
 
     @RequestMapping("/")
     public String index(Model model) {
+        System.out.println("coucou");
         List<ProductBean> products = msProductProxy.list();
         model.addAttribute("products", products);
         return "index";

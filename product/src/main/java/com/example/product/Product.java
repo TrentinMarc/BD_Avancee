@@ -17,8 +17,7 @@ public class Product {
 
     //CONSTRUCTOR
 
-    public Product(Long id, String name, String description, String illustration, Double price) {
-        this.id = id;
+    public Product(String name, String description, String illustration, Double price) {
         this.name = name;
         this.description = description;
         this.illustration = illustration;

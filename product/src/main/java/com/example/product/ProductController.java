@@ -18,6 +18,7 @@ public class ProductController {
     @GetMapping(value = "/products")
     public List<Product> list()
     {
+        System.out.println("ici");
         List<Product> productList = productRepository.findAll();
         return productList;
     }
