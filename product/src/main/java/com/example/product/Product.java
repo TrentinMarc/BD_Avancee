@@ -2,13 +2,14 @@ package com.example.product;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.List;
 
 @Entity
 public class Product {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;
@@ -17,8 +18,7 @@ public class Product {
 
     //CONSTRUCTOR
 
-    public Product(Long id, String name, String description, String illustration, Double price) {
-        this.id = id;
+    public Product(String name, String description, String illustration, Double price) {
         this.name = name;
         this.description = description;
         this.illustration = illustration;
