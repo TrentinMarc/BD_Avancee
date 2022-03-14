@@ -27,10 +27,10 @@ public class ClientController {
         return "index";
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/product-detail/{id}", method = RequestMethod.GET)
     public String detail(Model model, @PathVariable Long id) {
         Optional<ProductBean> product = msProductProxy.get(id);
-        model.addAttribute("product", product);
+        model.addAttribute("product", product.get());
         return "detail";
     }
 
