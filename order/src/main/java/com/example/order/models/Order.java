@@ -1,6 +1,5 @@
-package models;
+package com.example.order.models;
 
-import com.example.cart.models.OrderItem;
 import javax.persistence.*;
 import java.util.List;
 
@@ -11,11 +10,11 @@ public class Order {
     @GeneratedValue
     private Long id;
     @OneToMany(cascade = CascadeType.ALL)
-    private List<OrderItem> orderProducts;
+    private List<OrderItem> orderItems;
 
-    public Order(Long id, List<OrderItem> orderProducts) {
+    public Order(Long id, List<OrderItem> orderItems) {
         this.id = id;
-        this.orderProducts = orderProducts;
+        this.orderItems = orderItems;
     }
 
     public Order(){}
@@ -29,26 +28,26 @@ public class Order {
     }
 
     public List<OrderItem> getProducts() {
-        return orderProducts;
+        return orderItems;
     }
 
     public void setOrderProducts(List<OrderItem> order) {
-        this.orderProducts = order;
+        this.orderItems = order;
     }
 
     @Override
     public String toString() {
         return "Cart{" +
                 "id=" + id +
-                ", order=" + orderProducts +
+                ", order=" + orderItems +
                 '}';
     }
 
     public double totalPrice() {
         double price = 0;
 
-        for (int i = 0; i < orderProducts.size(); i++) {
-            price += orderProducts.get(i).price;
+        for (int i = 0; i < orderItems.size(); i++) {
+            price += orderItems.get(i).price;
         }
 
         return price;

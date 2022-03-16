@@ -1,4 +1,4 @@
-package com.example.cart.models;
+package com.example.order.models;
 
 
 
@@ -12,13 +12,13 @@ public class OrderItem {
     @Id
     @GeneratedValue
     private Long id;
-    private Long productId;
+    private Long orderId;
     private Integer quantity;
     public double price;
 
-    public OrderItem(Long id, Long productId, Integer quantity, double price) {
+    public OrderItem(Long id, Long orderId, Integer quantity, double price) {
         this.id = id;
-        this.productId = productId;
+        this.orderId = orderId;
         this.quantity = quantity;
         this.price = price;
     }
@@ -34,12 +34,12 @@ public class OrderItem {
         this.id = id;
     }
 
-    public Long getProductId() {
-        return productId;
+    public Long getOrderId() {
+        return orderId;
     }
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 
     public Integer getQuantity() {
@@ -54,7 +54,7 @@ public class OrderItem {
     public String toString() {
         return "CartItem{" +
                 "id=" + id +
-                ", productId=" + productId +
+                ", orderId=" + orderId +
                 ", quantity=" + quantity +
                 ", price=" + price +
                 '}';
