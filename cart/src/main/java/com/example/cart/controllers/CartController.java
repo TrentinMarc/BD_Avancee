@@ -44,11 +44,18 @@ public class CartController {
     @Transactional
     public ResponseEntity<CartItem> addProductToCart(@PathVariable Long id, @RequestBody CartItem cartItem)
     {
-        Cart cart = cartRepository.getOne(id);
-        if (cart == null)
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't get cart");
-        cart.addProduct(cartItem);
-        cartRepository.save(cart);
-        return new ResponseEntity<CartItem>(cartItem, HttpStatus.CREATED);
+        try{
+            Cart cart = cartRepository.getOne(id);
+            if (cart == null)
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't get cart");
+            System.out.println(cart);
+            cart.addProduct(cartItem);
+            cartRepository.save(cart);
+            return new ResponseEntity<CartItem>(cartItem, HttpStatus.CREATED);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+
     }
 }

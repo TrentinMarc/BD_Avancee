@@ -5,10 +5,12 @@ import com.example.beans.CartBean;
 import com.example.beans.CartItemBean;
 import com.example.proxy.MsCartProxy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Controller
 public class CartController {
@@ -17,12 +19,31 @@ public class CartController {
     private MsCartProxy msCartProxy;
 
     @RequestMapping(value = "/cart/{id}")
-    public void addToCart(@PathVariable Long id) {
-        if(!msCartProxy.getCart(id).isPresent()) {
-            msCartProxy.createNewCart();
+    public ResponseEntity<CartItemBean> addToCart(@PathVariable Long id, @RequestBody CartItemBean cartItem) {
+//        if(!msCartProxy.getCart(id).isPresent()) {
+//            msCartProxy.createNewCart();
+//        }
+        try{
+            System.out.println(cartItem);
+            return msCartProxy.addProductToCart(id, cartItem);
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
         }
 
 
+    }
+
+    @PostMapping(value = "/cart")
+    public ResponseEntity<CartBean> createNewCart(){
+        try{
+            ResponseEntity<CartBean> cart = msCartProxy.createNewCart();
+            return cart;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
 }

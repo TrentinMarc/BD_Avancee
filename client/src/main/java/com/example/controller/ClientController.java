@@ -30,6 +30,7 @@ public class ClientController {
     @RequestMapping(value = "/product-detail/{id}", method = RequestMethod.GET)
     public String detail(Model model, @PathVariable Long id) {
         Optional<ProductBean> product = msProductProxy.get(id);
+        System.out.println(product.get());
         model.addAttribute("product", product.get());
         return "detail";
     }

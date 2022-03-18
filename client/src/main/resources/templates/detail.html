@@ -10,27 +10,53 @@
         <div class="col-md-4 my-1">
             <img th:src="${product.illustration}" class="card-img-top" />
             <p th:text= "${product.name}"></p>
-            <form method="POST" onsubmit="addToCart()" th:action="@{cart/${id}}">
-                <input type="hidden" name="productId" th:value="${product.id}"/>
-                <input type="hidden" name="product" th:value="${product}"/>
+            <form method="POST" id="cartForm">
+                <input type="hidden" id="id" th:value="${product.id}"/>
                 <button type="submit" class="link-button">ADD TO CART</button>
             </form>
         </div>
     </div>
 </div>
 <script>
-    function addToCart() {
-        let url = "http://localhost:8092";
+    /*function addToCart() {
+
+
+    }*/
+    document.querySelector("#cartForm").addEventListener("submit", async function(e){
+        e.preventDefault();
+       let baseUrl = "http://localhost:8090";
         let createCart = "/cart";
         let cart = sessionStorage.getItem('cartId');
         if(cart == null) {
-            fetch(url + createCart, {
-                method: "POST",
-            }).then(response => response.id).catch(error => console.log(error));
-
+            await fetch(baseUrl + createCart, {
+               method: "POST",
+            }).then(response => response.json())
+            .then(data => {
+                sessionStorage.setItem('cartId', data.id);
+                console.log("new cart " + data.id);
+            })
+            .catch(error => console.log(error));
         }
+        let data = {
+            productId: parseInt(document.querySelector("#id").value)
+        }
+        console.log("session " + sessionStorage.getItem('cartId'));
+        console.log(data);
+        let addProductUrl = baseUrl + createCart + "/" + sessionStorage.getItem('cartId');
+        await fetch(addProductUrl, {
+               method: "POST",
+               body: JSON.stringify(data),
+               headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                },
+            }).then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => console.log(error));
 
-    }
+    });
 </script>
 </body>
 </html>
