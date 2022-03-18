@@ -8,11 +8,29 @@
     <h1>Microservice Client eCommerce</h1>
     <div class="row">
         <div class="col-md-4 my-1">
-                <img th:src="${product.illustration}" class="card-img-top" />
-                <p th:text= "${product.name}"></p>
-                <button>ADD TO CART</button>
+            <img th:src="${product.illustration}" class="card-img-top" />
+            <p th:text= "${product.name}"></p>
+            <form method="POST" onsubmit="addToCart()" th:action="@{cart/${id}}">
+                <input type="hidden" name="productId" th:value="${product.id}"/>
+                <input type="hidden" name="product" th:value="${product}"/>
+                <button type="submit" class="link-button">ADD TO CART</button>
+            </form>
         </div>
     </div>
 </div>
+<script>
+    function addToCart() {
+        let url = "http://localhost:8092";
+        let createCart = "/cart";
+        let cart = sessionStorage.getItem('cartId');
+        if(cart == null) {
+            fetch(url + createCart, {
+                method: "POST",
+            }).then(response => response.id).catch(error => console.log(error));
+
+        }
+
+    }
+</script>
 </body>
 </html>
