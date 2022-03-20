@@ -13,7 +13,32 @@
                 <p th:text= "${product.name}"></p>
             </a>
         </div>
+        <button class="link-button" onclick="goToCart()">Go to my cart</button>
     </div>
 </div>
+
+<script>
+
+
+    let cart = sessionStorage.getItem('cartId');
+    let baseUrl = "http://localhost:8090";
+    let cartPrefix = "/cart";
+    function goToCart(){
+        if(cart != null){
+            await fetch(baseUrl + cartPrefix + "/" + cart, {
+               method: "GET",
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data == null){
+                    alert('le panier n existe pas... relancer votre navigateur');
+                }else{
+                    window.location.href = "http://localhost:8090/cart";
+                }
+            })
+            .catch(error => console.log("tb"));
+        }
+    }
+</script>
 </body>
 </html>

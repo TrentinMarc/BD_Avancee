@@ -20,9 +20,6 @@ public class CartController {
 
     @RequestMapping(value = "/cart/{id}", method = RequestMethod.POST)
     public ResponseEntity<CartItemBean> addToCart(@PathVariable Long id, @RequestBody CartItemBean cartItem) {
-//        if(!msCartProxy.getCart(id).isPresent()) {
-//            msCartProxy.createNewCart();
-//        }
         try{
             System.out.println(cartItem);
             return msCartProxy.addProductToCart(id, cartItem);
