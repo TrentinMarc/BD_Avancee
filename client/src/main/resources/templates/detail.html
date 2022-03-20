@@ -18,31 +18,45 @@
     </div>
 </div>
 <script>
-    /*function addToCart() {
-
-
-    }*/
-    document.querySelector("#cartForm").addEventListener("submit", async function(e){
-        e.preventDefault();
-       let baseUrl = "http://localhost:8090";
-        let createCart = "/cart";
-        let cart = sessionStorage.getItem('cartId');
-        if(cart == null) {
-            await fetch(baseUrl + createCart, {
+    let baseUrl = "http://localhost:8090";
+    let cartPrefix = "/cart";
+    async function createCart() {
+        await fetch(baseUrl + cartPrefix, {
                method: "POST",
-            }).then(response => response.json())
+            })
+            .then(response => response.json())
             .then(data => {
                 sessionStorage.setItem('cartId', data.id);
                 console.log("new cart " + data.id);
             })
             .catch(error => console.log(error));
+    }
+    document.querySelector("#cartForm").addEventListener("submit", async function(e){
+        e.preventDefault();
+
+        let cart = sessionStorage.getItem('cartId');
+        if(cart == null) {
+            console.log("cart is null, creating ...");
+            createCart();
+        }else{
+            console.log("cart is not null, retrieving ...");
+            await fetch(baseUrl + cartPrefix + "/" + cart, {
+               method: "GET",
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data == null){
+                    createCart();
+                }else{
+                    console.log(data);
+                }
+            })
+            .catch(error => console.log("tb"));
         }
         let data = {
             productId: parseInt(document.querySelector("#id").value)
         }
-        console.log("session " + sessionStorage.getItem('cartId'));
-        console.log(data);
-        let addProductUrl = baseUrl + createCart + "/" + sessionStorage.getItem('cartId');
+        let addProductUrl = baseUrl + cartPrefix + "/" + sessionStorage.getItem('cartId');
         await fetch(addProductUrl, {
                method: "POST",
                body: JSON.stringify(data),
@@ -55,7 +69,6 @@
                 console.log(data);
             })
             .catch(error => console.log(error));
-
     });
 </script>
 </body>

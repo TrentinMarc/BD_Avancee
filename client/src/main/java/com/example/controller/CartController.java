@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-@Controller
+@RestController
 public class CartController {
 
     @Autowired
     private MsCartProxy msCartProxy;
 
-    @RequestMapping(value = "/cart/{id}")
+    @RequestMapping(value = "/cart/{id}", method = RequestMethod.POST)
     public ResponseEntity<CartItemBean> addToCart(@PathVariable Long id, @RequestBody CartItemBean cartItem) {
 //        if(!msCartProxy.getCart(id).isPresent()) {
 //            msCartProxy.createNewCart();
@@ -39,6 +39,17 @@ public class CartController {
     public ResponseEntity<CartBean> createNewCart(){
         try{
             ResponseEntity<CartBean> cart = msCartProxy.createNewCart();
+            return cart;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    @GetMapping(value = "/cart/{id}")
+    public Optional<CartBean> getCart(@PathVariable Long id){
+        try{
+            Optional<CartBean> cart = msCartProxy.getCart(id);
             return cart;
         }catch (Exception e){
             System.out.println(e.getMessage());

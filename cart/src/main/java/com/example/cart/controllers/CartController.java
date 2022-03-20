@@ -34,9 +34,12 @@ public class CartController {
     @GetMapping(value = "/cart/{id}")
     public Optional<Cart> getCart(@PathVariable Long id)
     {
+        System.out.println("TBBBB");
         Optional<Cart> cart = cartRepository.findById(id);
-        if (!cart.isPresent())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't get cart");
+        if(!cart.isPresent()){
+            return null;
+        }
+        System.out.println(cart);
         return cart;
     }
 
