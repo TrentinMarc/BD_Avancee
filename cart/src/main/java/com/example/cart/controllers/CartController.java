@@ -23,7 +23,7 @@ public class CartController {
     CartItemRepository cartItemRepository;
 
     @PostMapping(value = "/cart")
-    public ResponseEntity<Cart> createNewCart(@RequestBody Cart cartData)
+    public ResponseEntity<Cart> createNewCart()
     {
         Cart cart = cartRepository.save(new Cart());
         if (cart == null)
@@ -34,9 +34,12 @@ public class CartController {
     @GetMapping(value = "/cart/{id}")
     public Optional<Cart> getCart(@PathVariable Long id)
     {
+        System.out.println("TBBBB");
         Optional<Cart> cart = cartRepository.findById(id);
-        if (!cart.isPresent())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't get cart");
+        if(!cart.isPresent()){
+            return null;
+        }
+        System.out.println(cart);
         return cart;
     }
 
@@ -44,11 +47,18 @@ public class CartController {
     @Transactional
     public ResponseEntity<CartItem> addProductToCart(@PathVariable Long id, @RequestBody CartItem cartItem)
     {
-        Cart cart = cartRepository.getOne(id);
-        if (cart == null)
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't get cart");
-        cart.addProduct(cartItem);
-        cartRepository.save(cart);
-        return new ResponseEntity<CartItem>(cartItem, HttpStatus.CREATED);
+        try{
+            Cart cart = cartRepository.getOne(id);
+            if (cart == null)
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't get cart");
+            System.out.println(cart);
+            cart.addProduct(cartItem);
+            cartRepository.save(cart);
+            return new ResponseEntity<CartItem>(cartItem, HttpStatus.CREATED);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+
     }
 }
