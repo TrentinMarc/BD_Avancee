@@ -15,11 +15,36 @@
                 <button type="submit" class="link-button">ADD TO CART</button>
             </form>
         </div>
+        <button class="link-button" id="goToCart">Go to my cart</button>
     </div>
 </div>
 <script>
+
+
     let baseUrl = "http://localhost:8090";
     let cartPrefix = "/cart";
+    function goToCart(){
+        let cart = sessionStorage.getItem('cartId');
+        if(sessionStorage.getItem('cartId') != null){
+            fetch(baseUrl + cartPrefix + "/" + cart, {
+               method: "GET",
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data == null){
+                    alert('le panier n existe pas... relancer votre navigateur');
+                }else{
+                    window.location.href = "http://localhost:8090/mycart" + "/" + cart;
+                }
+            })
+            .catch(error => console.log("tb"));
+        }else{
+            alert('aucun produit dans le panier');
+        }
+    }
+    document.querySelector("#goToCart").addEventListener("click", async function(e){
+        goToCart();
+    });
     async function createCart() {
         await fetch(baseUrl + cartPrefix, {
                method: "POST",
@@ -37,7 +62,7 @@
         let cart = sessionStorage.getItem('cartId');
         if(cart == null) {
             console.log("cart is null, creating ...");
-            createCart();
+            await createCart();
         }else{
             console.log("cart is not null, retrieving ...");
             await fetch(baseUrl + cartPrefix + "/" + cart, {
@@ -67,6 +92,7 @@
             }).then(response => response.json())
             .then(data => {
                 console.log(data);
+                alert("Produit ajouté");
             })
             .catch(error => console.log(error));
     });
